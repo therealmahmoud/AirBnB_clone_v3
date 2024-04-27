@@ -80,7 +80,7 @@ class DBStorage:
         if cls is None or id is None:
             return None
         for clss in classes:
-            if cls == clss:
+            if cls is classes[clss]:
                 classs = all(cls)
                 for i in classs:
                     if i[id] == id:
