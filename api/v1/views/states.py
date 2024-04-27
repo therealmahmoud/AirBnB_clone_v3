@@ -3,16 +3,12 @@
 from flask import jsonify, request, abort, make_response
 from api.v1.views import app_views
 from models import storage
-from models.amenity import Amenity
-from models.city import City
-from models.place import Place
-from models.review import Review
 from models.state import State
-from models.user import User
-from models.base_model import BaseModel
+from flasgger.utils import swag_from
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
+@swag_from('documentation/state/get_state.yml', methods=['GET'])
 def states_get():
     """ Retrieves the list of all State objects."""
     dic = storage.all(State).values()
@@ -23,6 +19,7 @@ def states_get():
 
 
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
+@swag_from('documentation/state/get_id_state.yml', methods=['get'])
 def states_id_get(state_id):
     """ Get an object."""
     clas = storage.get(State, state_id)
@@ -33,6 +30,7 @@ def states_id_get(state_id):
 
 @app_views.route('/states/<state_id>', methods=['DELETE'],
                  strict_slashes=False)
+@swag_from('documentation/state/delete_state.yml', methods=['DELETE'])
 def del_states(state_id):
     """ Delete an object."""
     clas = storage.get(State, state_id)
@@ -44,6 +42,7 @@ def del_states(state_id):
 
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
+@swag_from('documentation/state/post_state.yml', methods=['POST'])
 def post_States():
     """ Post an object."""
     if not request.get_json():
@@ -57,6 +56,7 @@ def post_States():
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
+@swag_from('documentation/state/put_state.yml', methods=['PUT'])
 def put_states(state_id):
     """ Put or update an object."""
     clas = storage.get(State, state_id)
