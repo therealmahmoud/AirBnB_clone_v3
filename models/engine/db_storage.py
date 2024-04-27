@@ -88,4 +88,11 @@ class DBStorage:
                         return i
                             
     def count(self, cls=None):
-        
+        if cls is None:
+            return len(self.all(cls).values())
+        for clss in classes:
+            if cls is classes[clss]:
+                count = 0
+                for i in self.all(cls).values():
+                    count += 1
+                return i    
