@@ -1,12 +1,17 @@
 #!/usr/bin/python3
 """ Main module of an API!"""
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, jsonify
 from models import storage
 from api.v1.views import app_views
 from os import environ
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
+
+
+@app.errorhandler(404)
+def err_not_found(error):
+    return jsonify({"error": "Not found"}), 404
 
 
 @app.teardown_appcontext
