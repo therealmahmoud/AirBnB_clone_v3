@@ -62,16 +62,12 @@ def put_states(state_id):
     clas = storage.get(State, state_id)
     if clas is None:
         abort(404)
-    dct = request.get_json()
     if not request.get_json():
         abort(400, description="Not a JSON")
+    hash = ['id', 'created_at', 'updated_at']
+    dct = request.get_json()
     for key, value in dct.items():
-        if key is "id":
-            continue
-        if key is "created_at":
-            continue
-        if key is "updated_at":
-            continue
-        setattr(clas, key, value)
+        if key not in hash:
+            setattr(clas, key, value)
     storage.save()
     return make_response(jsonify(clas.to_dict()), 200)
