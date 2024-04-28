@@ -8,7 +8,7 @@ from models import storage
 
 @app_views.route('/amenities',
                  methods=['GET'], strict_slashes=False)
-def amenity_get():
+def get_amenity():
     """ Get an object."""
     clas = storage.all(Amenity).values()
     lis = []
@@ -19,7 +19,7 @@ def amenity_get():
 
 @app_views.route('/amenities/<amenity_id>',
                  methods=['GET'], strict_slashes=False)
-def amenity_get(amenity_id):
+def get_amenity_id(amenity_id):
     """ Retrieves the list of all State objects."""
     amenity = storage.get(Amenity, amenity_id)
     if not amenity:
