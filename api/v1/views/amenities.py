@@ -42,7 +42,7 @@ def del_amenity(amenity_id):
 
 @app_views.route('/amenities', methods=['POST'],
                  strict_slashes=False)
-def post_amenity(amenity_id):
+def post_amenity():
     """ Post an object."""
     if not request.get_json():
         abort(400, description="Not a JSON")
