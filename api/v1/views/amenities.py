@@ -17,7 +17,7 @@ def get_amenity():
     return jsonify(lis)
 
 
-@app_views.route('/amenities/<amenity_id>/', methods=['GET'],
+@app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
 def get_amenity_id(amenity_id):
     """ Retrieves an amenity """
