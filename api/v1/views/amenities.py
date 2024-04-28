@@ -1,39 +1,39 @@
 #!/usr/bin/python3
 """ objects that handles all default RestFul API actions for cities """
+from models.amenity import Amenity
 from flask import jsonify, request, abort, make_response
 from api.v1.views import app_views
 from models import storage
-from models.city import City
-from models.state import State
 
 
-@app_views.route('/states/<state_id>/cities',
+@app_views.route('/amenities',
                  methods=['GET'], strict_slashes=False)
-def city_id_get(state_id):
+def amenity_get():
     """ Get an object."""
-    clas = storage.get(State, state_id)
+    clas = storage.all(Amenity).values()
     if not clas:
         abort(404)
     lis = []
-    for i in clas.cities:
+    for i in clas.amenities:
         lis.append(i.to_dict())
     return jsonify(lis)
 
 
-@app_views.route('/cities/<city_id>/', methods=['GET'], strict_slashes=False)
-def city_get(city_id):
+@app_views.route('/amenities/<amenity_id>',
+                 methods=['GET'], strict_slashes=False)
+def amenity_get(amenity_id):
     """ Retrieves the list of all State objects."""
-    city = storage.get(City, city_id)
-    if not city:
+    amenity = storage.get(Amenity, amenity_id)
+    if not amenity:
         abort(404)
-    return jsonify(city.to_dict())
+    return jsonify(amenity.to_dict())
 
 
-@app_views.route('/cities/<city_id>', methods=['DELETE'],
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
                  strict_slashes=False)
-def del_city(city_id):
+def del_amenity(amenity_id):
     """ Delete an object."""
-    clas = storage.get(City, city_id)
+    clas = storage.get(Amenity, amenity_id)
     if not clas:
         abort(404)
     storage.delete(clas)
@@ -41,33 +41,34 @@ def del_city(city_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'],
+@app_views.route('/amenities', methods=['POST'],
                  strict_slashes=False)
-def post_city(state_id):
+def post_amenity(amenity_id):
     """ Post an object."""
-    state = storage.get(State, state_id)
-    if not state:
+    clas = storage.get(Amenity, amenity_id)
+    if not clas:
         abort(404)
     if not request.get_json():
         abort(400, description="Not a JSON")
     if "name" not in request.get_json():
         abort(400, description="Missing name")
     data = request.get_json()
-    obj = City(**data)
-    obj.state_id = state.id
+    obj = Amenity(**data)
+    obj.state_id = clas.id
     obj.save()
     return make_response(jsonify(obj.to_dict()), 201)
 
 
-@app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
-def put_city(city_id):
+@app_views.route('/amenities/<amenity_id>',
+                 methods=['PUT'], strict_slashes=False)
+def put_amenity(amenity_id):
     """ Put or update an object."""
-    clas = storage.get(City, city_id)
+    clas = storage.get(Amenity, amenity_id)
     if not clas:
         abort(404)
     if not request.get_json():
         abort(400, description="Not a JSON")
-    hash = ['id', 'state_id', 'created_at', 'updated_at']
+    hash = ['id', 'created_at', 'updated_at']
     dct = request.get_json()
     for key, value in dct.items():
         if key not in hash:
