@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" objects that handles all default RestFul API actions for cities """
+""" objects that handles all default RestFul API actions for amenity """
 from models.amenity import Amenity
 from flask import jsonify, request, abort, make_response
 from api.v1.views import app_views
@@ -11,10 +11,8 @@ from models import storage
 def amenity_get():
     """ Get an object."""
     clas = storage.all(Amenity).values()
-    if not clas:
-        abort(404)
     lis = []
-    for i in clas.amenities:
+    for i in clas:
         lis.append(i.to_dict())
     return jsonify(lis)
 
