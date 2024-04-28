@@ -6,15 +6,16 @@ from api.v1.views import app_views
 from models import storage
 
 
-@app_views.route('/amenities',
-                 methods=['GET'], strict_slashes=False)
-def get_amenity():
-    """ Get an object."""
-    clas = storage.all(Amenity).values()
-    lis = []
-    for i in clas:
-        lis.append(i.to_dict())
-    return jsonify(lis)
+@app_views.route('/amenities', methods=['GET'], strict_slashes=False)
+def get_amenities():
+    """
+    Retrieves a list of all amenities
+    """
+    all_amenities = storage.all(Amenity).values()
+    list_amenities = []
+    for amenity in all_amenities:
+        list_amenities.append(amenity.to_dict())
+    return jsonify(list_amenities)
 
 
 @app_views.route('/amenities/<amenity_id>/',
