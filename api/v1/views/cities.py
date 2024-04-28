@@ -59,16 +59,21 @@ def post_city(state_id):
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 def put_city(city_id):
-    """ Put or update an object."""
-    clas = storage.get(City, city_id)
-    if not clas:
+    """
+    Updates a City
+    """
+    city = storage.get(City, city_id)
+    if not city:
         abort(404)
+
     if not request.get_json():
         abort(400, description="Not a JSON")
-    hash = ['id', 'state_id', 'created_at', 'updated_at']
-    dct = request.get_json()
-    for key, value in dct.items():
-        if key not in hash:
-            setattr(clas, key, value)
+
+    ignore = ['id', 'state_id', 'created_at', 'updated_at']
+
+    data = request.get_json()
+    for key, value in data.items():
+        if key not in ignore:
+            setattr(city, key, value)
     storage.save()
-    return make_response(jsonify(clas.to_dict()), 200)
+    return make_response(jsonify(city.to_dict()), 200)
