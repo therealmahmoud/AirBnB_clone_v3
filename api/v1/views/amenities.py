@@ -29,13 +29,19 @@ def amenity_get(amenity_id):
 
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
                  strict_slashes=False)
-def del_amenity(amenity_id):
-    """ Delete an object."""
-    clas = storage.get(Amenity, amenity_id)
-    if not clas:
+def delete_amenity(amenity_id):
+    """
+    Deletes an amenity  Object
+    """
+
+    amenity = storage.get(Amenity, amenity_id)
+
+    if not amenity:
         abort(404)
-    storage.delete(clas)
+
+    storage.delete(amenity)
     storage.save()
+
     return make_response(jsonify({}), 200)
 
 
