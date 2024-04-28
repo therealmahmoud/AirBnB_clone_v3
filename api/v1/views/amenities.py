@@ -48,7 +48,7 @@ def post_amenity(amenity_id):
         abort(404)
     if not request.get_json():
         abort(400, description="Not a JSON")
-    if "name" not in request.get_json():
+    if 'name' not in request.get_json():
         abort(400, description="Missing name")
     data = request.get_json()
     obj = Amenity(**data)
