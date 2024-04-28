@@ -43,14 +43,12 @@ def del_amenity(amenity_id):
                  strict_slashes=False)
 def post_amenity(amenity_id):
     """ Post an object."""
-    clas = storage.get(Amenity, amenity_id)
     if not request.get_json():
         abort(400, description="Not a JSON")
     if 'name' not in request.get_json():
         abort(400, description="Missing name")
     data = request.get_json()
     obj = Amenity(**data)
-    obj.state_id = clas.id
     obj.save()
     return make_response(jsonify(obj.to_dict()), 201)
 
