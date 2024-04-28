@@ -19,7 +19,6 @@ def get_amenity():
 
 @app_views.route('/amenities/<amenity_id>/', methods=['GET'],
                  strict_slashes=False)
-@swag_from('documentation/amenity/get_amenity.yml', methods=['GET'])
 def get_amenity_id(amenity_id):
     """ Retrieves an amenity """
     amenity = storage.get(Amenity, amenity_id)
