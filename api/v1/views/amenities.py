@@ -61,12 +61,12 @@ def post_amenity(amenity_id):
                  methods=['PUT'], strict_slashes=False)
 def put_amenity(amenity_id):
     """ Put or update an object."""
-    clas = storage.get(Amenity, amenity_id)
-    if not clas:
-        abort(404)
     if not request.get_json():
         abort(400, description="Not a JSON")
     hash = ['id', 'created_at', 'updated_at']
+    clas = storage.get(Amenity, amenity_id)
+    if not clas:
+        abort(404)
     dct = request.get_json()
     for key, value in dct.items():
         if key not in hash:
