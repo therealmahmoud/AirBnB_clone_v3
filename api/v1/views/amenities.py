@@ -44,8 +44,6 @@ def del_amenity(amenity_id):
 def post_amenity(amenity_id):
     """ Post an object."""
     clas = storage.get(Amenity, amenity_id)
-    if not clas:
-        abort(404)
     if not request.get_json():
         abort(400, description="Not a JSON")
     if 'name' not in request.get_json():
