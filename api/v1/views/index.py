@@ -18,12 +18,11 @@ def get_status():
 
 
 @app_views.route('/stats', methods=['GET'], strict_slashes=False)
-def get_count():
+def get_num():
     """ Retrieves the number of each objects by type."""
     dic = {}
-    class_name = ["amenities", "cities", "places",
-                  "reviews", "states", "users"]
     classes = [Amenity, City, Place, Review, State, User]
+    name = ["amenities", "cities", "places", "reviews", "states", "users"]
     for i in range(len(classes)):
-        dic[class_name[i]] = storage.count(classes[i])
+        dic[name[i]] = storage.count(classes[i])
     return jsonify(dic)
