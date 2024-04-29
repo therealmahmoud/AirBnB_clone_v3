@@ -8,7 +8,6 @@ from api.v1.views import app_views
 from models import storage
 
 
-
 @app_views.route('/places/<place_id>/reviews',
                  methods=['GET'], strict_slashes=False)
 def get_place(place_id):
