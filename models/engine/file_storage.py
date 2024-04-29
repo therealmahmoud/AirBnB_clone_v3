@@ -11,6 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+import models
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -80,12 +81,16 @@ class FileStorage:
         return None
 
     def count(self, cls=None):
-        """Returns the number of objects in storage matching the given class"""
-        if cls is None:
-            return len(self.all().values())
-        for clss in classes:
-            if cls is classes[clss]:
+            """
+            count the number of objects in storage
+            """
+            all_class = classes.values()
+
+            if not cls:
                 count = 0
-                for i in self.all(cls).values():
-                    count += 1
-                return count
+                for clas in all_class:
+                    count += len(models.storage.all(clas).values())
+            else:
+                count = len(models.storage.all(cls).values())
+
+            return count
