@@ -64,6 +64,7 @@ def post_place(city_id):
     city = storage.get(City, city_id)
     if not city:
         abort(404)
+    data["city_id"] = city_id
     obj = Place(**data)
     obj.save()
     return make_response(jsonify(obj.to_dict()), 201)
