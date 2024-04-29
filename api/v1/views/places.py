@@ -73,14 +73,14 @@ def post_place(city_id):
                  methods=['PUT'], strict_slashes=False)
 def put_place(place_id):
     """ Put or update an object."""
-    if not request.get_json():
+    data = request.get_json()
+    if not data:
         abort(400, description="Not a JSON")
-    hash = ['id', 'email', 'created_at', 'updated_at']
+    hash = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
     clas = storage.get(Place, place_id)
     if not clas:
         abort(404)
-    dct = request.get_json()
-    for key, value in dct.items():
+    for key, value in data.items():
         if key not in hash:
             setattr(clas, key, value)
     storage.save()
