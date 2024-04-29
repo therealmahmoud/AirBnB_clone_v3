@@ -49,19 +49,21 @@ def del_place(place_id):
                  strict_slashes=False)
 def post_place(city_id):
     """ Post an object."""
+    data = request.get_json()
+    if not data:
+        abort(400, description="Not a JSON")
+    if 'user_id' not in data:
+        abort(400, description="Missing user_id")
+    if 'name' not in data:
+        abort(400, description="Missing name")
+
+    user = storage.get(User, data['user_id'])
+    if not user:
+        abort(404)
+
     city = storage.get(City, city_id)
     if not city:
         abort(404)
-    if not request.get_json():
-        abort(400, description="Not a JSON")
-    if 'user_id' not in request.get_json():
-        abort(400, description="Missing user_id")
-    user = storage.get(User, request.get_json()['user_id'])
-    if not user:
-        abort(404)
-    if 'name' not in request.get_json():
-        abort(400, description="Missing name")
-    data = request.get_json()
     obj = Place(**data)
     obj.save()
     return make_response(jsonify(obj.to_dict()), 201)
