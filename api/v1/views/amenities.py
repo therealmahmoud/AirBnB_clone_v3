@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ objects that handles all default RestFul API actions for amenity """
-from models.amenity import Amenity
 from models import storage
 from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
+from models.amenity import Amenity
 
 
 @app_views.route('/amenities',
