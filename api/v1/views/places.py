@@ -24,11 +24,10 @@ def places(place_id):
 def get_place_id(city_id):
     """ Retrieves an user """
     city = storage.get(City, city_id)
-    place = storage.all(Place).values()
     if not city:
         abort(404)
     lis = []
-    for i in place:
+    for i in city.places:
         lis.append(i.to_dict())
 
     return jsonify(lis)
