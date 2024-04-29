@@ -8,7 +8,7 @@ from models.place import Place
 from models.city import City
 
 
-@app_views.route('/api/v1/places/<place_id>',
+@app_views.route('/places/<place_id>',
                  methods=['GET'], strict_slashes=False)
 def places(place_id):
     """ Retrieves an user """
@@ -19,7 +19,7 @@ def places(place_id):
     return jsonify(place.to_dict())
 
 
-@app_views.route('/api/v1/cities/<city_id>/places', methods=['GET'],
+@app_views.route('/cities/<city_id>/places', methods=['GET'],
                  strict_slashes=False)
 def get_place_id(city_id):
     """ Retrieves an user """
@@ -34,7 +34,7 @@ def get_place_id(city_id):
     return jsonify(lis)
 
 
-@app_views.route('/api/v1/places/<place_id>', methods=['DELETE'],
+@app_views.route('/places/<place_id>', methods=['DELETE'],
                  strict_slashes=False)
 def del_place(place_id):
     """ Delete an object."""
@@ -46,7 +46,7 @@ def del_place(place_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/api/v1/cities/<city_id>/places', methods=['POST'],
+@app_views.route('/cities/<city_id>/places', methods=['POST'],
                  strict_slashes=False)
 def post_place(city_id):
     """ Post an object."""
@@ -68,7 +68,7 @@ def post_place(city_id):
     return make_response(jsonify(obj.to_dict()), 201)
 
 
-@app_views.route('/api/v1/places/<place_id>',
+@app_views.route('/places/<place_id>',
                  methods=['PUT'], strict_slashes=False)
 def put_place(place_id):
     """ Put or update an object."""
