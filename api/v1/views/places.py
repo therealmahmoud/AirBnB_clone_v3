@@ -21,18 +21,17 @@ def places(place_id):
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
                  strict_slashes=False)
-def get_places(city_id):
-    """
-    Retrieves the list of all Place objects of a City
-    """
+def get_place_id(city_id):
+    """ Retrieves an user """
     city = storage.get(City, city_id)
-
+    place = storage.all(Place).values()
     if not city:
         abort(404)
+    lis = []
+    for i in place:
+        lis.append(i.to_dict())
 
-    places = [place.to_dict() for place in city.places]
-
-    return jsonify(places)
+    return jsonify(lis)
 
 
 @app_views.route('/places/<place_id>', methods=['DELETE'],
