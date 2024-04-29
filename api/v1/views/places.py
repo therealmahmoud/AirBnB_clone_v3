@@ -48,7 +48,7 @@ def del_place(place_id):
 
 @app_views.route('/api/v1/cities/<city_id>/places', methods=['POST'],
                  strict_slashes=False)
-def post_user(city_id):
+def post_place(city_id):
     """ Post an object."""
     city = storage.get(City, city_id)
     if not city:

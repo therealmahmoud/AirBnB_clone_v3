@@ -26,7 +26,7 @@ def get_place(place_id):
 
 @app_views.route('/reviews/<review_id>', methods=['GET'],
                  strict_slashes=False)
-def get_user_id(review_id):
+def get_review_id(review_id):
     """ Retrieves an review """
     review = storage.get(Review, review_id)
     if not review:
@@ -37,7 +37,7 @@ def get_user_id(review_id):
 
 @app_views.route('/reviews/<review_id>', methods=['DELETE'],
                  strict_slashes=False)
-def del_user(review_id):
+def del_review(review_id):
     """ Delete an object."""
     clas = storage.get(Review, review_id)
     if not clas:
@@ -49,7 +49,7 @@ def del_user(review_id):
 
 @app_views.route('/places/<place_id>/reviews', methods=['POST'],
                  strict_slashes=False)
-def post_user(place_id, user_id):
+def post_review(place_id, user_id):
     """ Post an object."""
     if not request.get_json():
         abort(400, description="Not a JSON")
@@ -71,7 +71,7 @@ def post_user(place_id, user_id):
 
 @app_views.route('/reviews/<review_id>',
                  methods=['PUT'], strict_slashes=False)
-def put_user(review_id):
+def put_review(review_id):
     """ Put or update an object."""
     clas = storage.get(Review, review_id)
     if not clas:
