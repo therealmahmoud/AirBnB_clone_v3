@@ -22,7 +22,7 @@ def stop(error):
 @app.errorhandler(404)
 def err_not_found(error):
     """ Handles the not found error 404."""
-    return make_response(jsonify({"error": "Not found"}), 404)
+    return make_response(jsonify({'error': "Not found"}), 404)
 
 
 if __name__ == "__main__":
