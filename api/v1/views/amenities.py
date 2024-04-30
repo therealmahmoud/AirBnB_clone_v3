@@ -49,6 +49,7 @@ def post_amenity():
     if 'name' not in request.get_json():
         abort(400, description="Missing name")
     data = request.get_json()
+
     obj = Amenity(**data)
     obj.save()
     return make_response(jsonify(obj.to_dict()), 201)
@@ -58,15 +59,15 @@ def post_amenity():
                  methods=['PUT'], strict_slashes=False)
 def put_amenity(amenity_id):
     """ Put or update an object."""
+    amenity = storage.get(Amenity, amenity_id)
+    if not amenity:
+        abort(404)
     if not request.get_json():
         abort(400, description="Not a JSON")
     hash = ['id', 'created_at', 'updated_at']
-    clas = storage.get(Amenity, amenity_id)
-    if not clas:
-        abort(404)
     dct = request.get_json()
     for key, value in dct.items():
         if key not in hash:
-            setattr(clas, key, value)
+            setattr(amenity, key, value)
     storage.save()
-    return make_response(jsonify(clas.to_dict()), 200)
+    return make_response(jsonify(amenity.to_dict()), 200)
