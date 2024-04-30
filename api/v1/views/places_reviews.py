@@ -12,14 +12,11 @@ from models import storage
                  methods=['GET'], strict_slashes=False)
 def get_place(place_id):
     """ Get an object."""
-    clas = storage.all(Review).values()
-    place = storage.get(Review, place_id)
+    place = storage.get(Place, place_id)
     if not place:
         abort(404)
-    if not clas:
-        abort(404)
     lis = []
-    for i in clas:
+    for i in place.reviews:
         lis.append(i.to_dict())
     return jsonify(lis)
 
@@ -49,21 +46,23 @@ def del_review(review_id):
 
 @app_views.route('/places/<place_id>/reviews', methods=['POST'],
                  strict_slashes=False)
-def post_review(place_id, user_id):
+def post_review(place_id):
     """ Post an object."""
     if not request.get_json():
         abort(400, description="Not a JSON")
-    clas = storage.get(Review, place_id)
-    if not clas:
+    place = storage.get(Place, place_id)
+    if not place:
         abort(404)
     if 'user_id' not in request.get_json():
         abort(400, description="Missing user_id")
-    classs = storage.get(Review, user_id)
-    if not classs:
+    data = request.get_json()
+    user = storage.get(User, data['user_id'])
+    if not user:
         abort(404)
     if 'text' not in request.get_json():
         abort(400, description="Missing text")
-    data = request.get_json()
+
+    data["place_id"] = place_id
     obj = Review(**data)
     obj.save()
     return make_response(jsonify(obj.to_dict()), 201)
@@ -73,8 +72,8 @@ def post_review(place_id, user_id):
                  methods=['PUT'], strict_slashes=False)
 def put_review(review_id):
     """ Put or update an object."""
-    clas = storage.get(Review, review_id)
-    if not clas:
+    review = storage.get(Review, review_id)
+    if not review:
         abort(404)
     if not request.get_json():
         abort(400, description="Not a JSON")
@@ -82,6 +81,6 @@ def put_review(review_id):
     dct = request.get_json()
     for key, value in dct.items():
         if key not in hash:
-            setattr(clas, key, value)
+            setattr(review, key, value)
     storage.save()
-    return make_response(jsonify(clas.to_dict()), 200)
+    return make_response(jsonify(review.to_dict()), 200)
